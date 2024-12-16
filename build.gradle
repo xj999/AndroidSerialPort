@@ -31,7 +31,11 @@ allprojects {
         google()
     }
 }
-
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)  // 指定 Java 17
+    }
+}
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
