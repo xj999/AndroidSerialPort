@@ -1,19 +1,17 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize' // 替换 kotlin-android-extensions，避免兼容性问题
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "29.0.0"
+    namespace 'com.vi.androidserialport' // 新增的命名空间，确保与 applicationId 保持一致
+    compileSdkVersion 33 // 升级 compileSdk 版本
     defaultConfig {
         applicationId "com.vi.androidserialport"
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion 21 // 建议升级到 21 以适配更多设备
+        targetSdkVersion 33 // 确保与 compileSdk 一致
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -21,17 +19,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        viewBinding true // 启用 ViewBinding
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11  // 设置 Java 源代码兼容性为 Java 11
+        targetCompatibility JavaVersion.VERSION_11  // 设置 Java 目标兼容性为 Java 11
+    }
+    kotlinOptions {
+        jvmTarget = '11'  // 或者使用 11，具体根据你使用的 Kotlin 版本来定
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.6.1' // 替换了过时的 support 库
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4' // 替换约束布局
+    testImplementation 'junit:junit:4.13.2' // 升级 JUnit 版本
+    androidTestImplementation 'androidx.test:runner:1.5.2' // 替换 support 测试库
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation project(path: ':vioserial')
-
 }

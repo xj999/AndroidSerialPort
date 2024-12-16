@@ -1,17 +1,16 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
-
+    namespace 'com.vi.vioserial' // 建议将 namespace 指定为与库的包名一致
+    compileSdkVersion 33 // 升级到最新的编译 SDK 版本，确保与 targetSdkVersion 保持一致
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 28
+        minSdkVersion 21 // 建议将 minSdkVersion 提升到 21，减少兼容性问题
+        targetSdkVersion 33 // targetSdkVersion 应与 compileSdkVersion 保持一致
         versionCode 150
         versionName "1.5.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" // 替换了已弃用的 support 库的测试 runner
     }
 
     buildTypes {
@@ -26,8 +25,17 @@ android {
             path 'CMakeLists.txt'
         }
     }
+
+    buildFeatures {
+        buildConfig = true // 启用 BuildConfig 生成
+    }
 }
 
 dependencies {
-
+    // 替换 Android Support 库为 AndroidX 版本
+    implementation 'androidx.appcompat:appcompat:1.6.1' // 替换过时的 support-v7
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4' // 替换约束布局库
+    testImplementation 'junit:junit:4.13.2' // 使用最新的 JUnit 版本
+    androidTestImplementation 'androidx.test:runner:1.5.2' // 替换 support 测试库
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1' // 替换 support Espresso
 }
